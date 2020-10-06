@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.example.demo.model.MyResponse;
@@ -37,17 +39,18 @@ class DemoIntegrationApplicationTests {
     public void testPassValidator() throws JSONException {
 
         HttpHeaders headers = new HttpHeaders();
-        // headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Accept", "application/json");
         JSONObject myRequest = new JSONObject();
         myRequest.put("msisdn", "55765");
         myRequest.put("languageId", 5);
         myRequest.put("transactionId", "00055765");
         myRequest.put("notificationType", "SMS");
+        HttpEntity<String> request = new HttpEntity<>(myRequest.toString(), headers);
 
         String string = myRequest.toString();
         System.out.println(string);
-        MyResponse response = template.postForObject(base.toString(), string, MyResponse.class);
+        MyResponse response = template.postForObject(base.toString(), request, MyResponse.class);
         System.out.println(response);
     }
 
@@ -55,7 +58,7 @@ class DemoIntegrationApplicationTests {
     public void testFailsValidator() throws JSONException {
 
         HttpHeaders headers = new HttpHeaders();
-        // headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Accept", "application/json");
         JSONObject myRequest = new JSONObject();
         myRequest.put("msisdn", "");
@@ -63,9 +66,11 @@ class DemoIntegrationApplicationTests {
         myRequest.put("transactionId", "00055765");
         myRequest.put("notificationType", "SMS");
 
+        HttpEntity<String> request = new HttpEntity<>(myRequest.toString(), headers);
+
         String string = myRequest.toString();
         System.out.println(string);
-        MyResponse response = template.postForObject(base.toString(), string, MyResponse.class);
+        MyResponse response = template.postForObject(base.toString(), request, MyResponse.class);
         System.out.println(response);
     }
 
