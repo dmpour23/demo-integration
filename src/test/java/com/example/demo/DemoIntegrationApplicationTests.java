@@ -3,7 +3,6 @@ package com.example.demo;
 import java.net.URL;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.example.demo.model.MyResponse;
+import com.example.demo.model.MyRequest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -36,21 +35,21 @@ class DemoIntegrationApplicationTests {
     }
 
     @Test
-    public void testPassValidator() throws JSONException {
+    public void testshouldPassValidator() throws JSONException {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Accept", "application/json");
-        JSONObject myRequest = new JSONObject();
-        myRequest.put("msisdn", "55765");
-        myRequest.put("languageId", 5);
-        myRequest.put("transactionId", "00055765");
-        myRequest.put("notificationType", "SMS");
-        HttpEntity<String> request = new HttpEntity<>(myRequest.toString(), headers);
+        MyRequest req = new MyRequest();
+        req.setLanguageId(1);
+        req.setTransactionId("0005");
+        req.setNotificationType("SMS");
+        req.setMsisdn("5");
 
-        String string = myRequest.toString();
-        System.out.println(string);
-        MyResponse response = template.postForObject(base.toString(), request, MyResponse.class);
+        HttpEntity<MyRequest> request = new HttpEntity<>(req, headers);
+
+        System.out.println(req);
+        String response = template.postForObject(base.toString(), request, String.class);
         System.out.println(response);
     }
 
@@ -60,17 +59,17 @@ class DemoIntegrationApplicationTests {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Accept", "application/json");
-        JSONObject myRequest = new JSONObject();
-        myRequest.put("msisdn", "");
-        myRequest.put("languageId", 5);
-        myRequest.put("transactionId", "00055765");
-        myRequest.put("notificationType", "SMS");
 
-        HttpEntity<String> request = new HttpEntity<>(myRequest.toString(), headers);
+        MyRequest req = new MyRequest();
+        req.setLanguageId(1);
+        req.setTransactionId("0005");
+        req.setNotificationType("SMS");
+        req.setMsisdn("");
 
-        String string = myRequest.toString();
-        System.out.println(string);
-        MyResponse response = template.postForObject(base.toString(), request, MyResponse.class);
+        HttpEntity<MyRequest> request = new HttpEntity<>(req, headers);
+
+        System.out.println(request);
+        String response = template.postForObject(base.toString(), request, String.class);
         System.out.println(response);
     }
 
