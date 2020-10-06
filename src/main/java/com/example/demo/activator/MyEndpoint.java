@@ -33,18 +33,6 @@ public class MyEndpoint {
             .setHeader(STATUSCODE_HEADER, HttpStatus.OK)
             .build();
 
-        // } catch (Exception e) {
-        // logger.error("Error {}", e.getMessage());
-        // e.printStackTrace();
-        // CisRespose cisRespose = new CisRespose();
-        // cisRespose.setTransactionId(message.getPayload().getTransactionId());
-        // cisRespose.setNotificationRequestId(UUID.randomUUID().toString());
-        // cisRespose.setCode("EMPTY");
-        // return MessageBuilder.withPayload(cisRespose)
-        // .copyHeadersIfAbsent(message.getHeaders())
-        // .setHeader(STATUSCODE_HEADER, HttpStatus.INTERNAL_SERVER_ERROR)
-        // .build();
-        // }
     }
 
 }
